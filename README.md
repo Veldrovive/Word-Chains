@@ -25,3 +25,7 @@ The "-ings" are still the bane of the graph. Although they are connected to the 
 
 ### Visualizing the graph
 For detailed instructions, reference [CodeParade's README](https://github.com/HackerPoet/WordChainSolver?tab=readme-ov-file#viewing-the-graphs). I have included a built graph at [/word_graph.dot](/word_graph.dot).
+
+For some reason the instructions for the gravity parameter did not work for me. I had to turn on stronger gravity and set the gravity to `0.01`.
+
+I then get this [visualized graph](/visualizations/full_graph.pdf). The labels are on the nodes, but you need to download the pdf to be able to zoom in enough to see them.
