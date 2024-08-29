@@ -238,7 +238,7 @@ class WordGraph:
 
         return longest_path, longest_path_length
 
-    def to_dot(self, allowed_lengths=None):
+    def to_dot(self, allowed_lengths=None, min_component_size=None):
         # Now we convert to the DOT format
         keywords = ['NODE', 'EDGE', 'GRAPH', 'DIGRAPH', 'SUBGRAPH', 'STRICT']
         def fix_keyword(w):
@@ -247,16 +247,27 @@ class WordGraph:
                 return '_' + w
             return w
 
+        # Construct a map from word to the size of its connected component
+        word_component_sizes = {}
+        disconnected_components = self.find_disconnected_components()
+        for component in disconnected_components:
+            for word in component:
+                word_component_sizes[word] = len(component)
+
         added_edges = set()
         dot_lines = []
         dot_lines.append("graph words {")
         for node in self.word_graph.keys():
             if allowed_lengths is not None and word_lengths[node] not in allowed_lengths:
                 continue
+            if min_component_size is not None and word_component_sizes[self.words[node]] < min_component_size:
+                continue
             root_word = fix_keyword(self.words[node])
             dot_lines.append(f"\t\"{root_word}\";")
         for node, neighbors in self.word_graph.items():
             if allowed_lengths is not None and word_lengths[node] not in allowed_lengths:
+                continue
+            if min_component_size is not None and word_component_sizes[self.words[node]] < min_component_size:
                 continue
             root_word = fix_keyword(self.words[node])
             for neighbor in neighbors:

@@ -14,8 +14,20 @@ def main():
         print('Invalid input')
         return
 
+    try:
+        min_component_size = input('Enter the minimum size of the connected components used when exporting the graph: ')
+        if min_component_size:
+            min_component_size = int(min_component_size)
+            if min_component_size < 1:
+                raise ValueError
+        else:
+            min_component_size = None
+    except ValueError:
+        print('Invalid input')
+        return
+
     graph = WordGraph(words)
-    dot_string = graph.to_dot()
+    dot_string = graph.to_dot(min_component_size=min_component_size)
     with open('word_graph.dot', 'w') as f:
         f.write(dot_string)
 
